@@ -8,4 +8,8 @@ public interface UserService {
 
 	List<User> allUsersSortedH2(String sortedBy) throws IllegalArgumentException;
 	List<User> allUsersSortedArray(String sortedBy) throws IllegalArgumentException;
+	List<User> usersFilter(String filter) throws IllegalArgumentException;
+	List<User> save(User user) throws IllegalArgumentException;
+	List<User> update(String id) throws IllegalArgumentException;
+	List<User> remove(String id) throws IllegalArgumentException;
 }

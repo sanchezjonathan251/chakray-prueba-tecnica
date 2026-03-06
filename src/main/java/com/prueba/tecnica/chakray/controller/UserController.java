@@ -35,8 +35,8 @@ public class UserController {
 		return ResponseEntity.ok(users);
 	}
 	
-	@GetMapping("users")
-	public ResponseEntity<?> usersSorted(@RequestParam(required = false) String sortBy){
+	@GetMapping(value = "users", params = "sortBy")
+	public ResponseEntity<?> usersSorted(@RequestParam String sortBy){
 		List<User> users = null;
 		
 		try {
@@ -48,4 +48,20 @@ public class UserController {
 		
 		return ResponseEntity.ok(users);
 	}
+	
+	@GetMapping(value = "users", params = "filter")
+	public ResponseEntity<?> usersfilter(@RequestParam String filter){
+		List<User> users = null;
+		
+		try {
+			users = userService.usersFilter(filter);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	                .body(e.getMessage());
+		}
+		
+		return ResponseEntity.ok(users);
+	}
+	
+	
 }

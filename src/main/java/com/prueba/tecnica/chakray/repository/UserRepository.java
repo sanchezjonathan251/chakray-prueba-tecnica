@@ -1,13 +1,10 @@
 package com.prueba.tecnica.chakray.repository;
 
-import java.util.UUID;
+import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.prueba.tecnica.chakray.model.User;
 
-import com.prueba.tecnica.chakray.entity.UserEntity;
+public interface UserRepository {
 
-@Repository
-public interface UserRepository extends JpaRepository<UserEntity, UUID> {
-
+	List<User> allUsers();
 }

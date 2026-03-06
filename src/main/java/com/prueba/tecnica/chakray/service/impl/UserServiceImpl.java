@@ -1,80 +1,28 @@
 package com.prueba.tecnica.chakray.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.prueba.tecnica.chakray.model.Address;
 import com.prueba.tecnica.chakray.model.User;
 import com.prueba.tecnica.chakray.repository.UserRepository;
+import com.prueba.tecnica.chakray.repository.UserRepositoryH2;
 import com.prueba.tecnica.chakray.service.UserService;
 import com.prueba.tecnica.chakray.utils.UserMapper;
 import com.prueba.tecnica.chakray.utils.UserSortField;
 
-import jakarta.annotation.PostConstruct;
 
 @Service
 public class UserServiceImpl implements UserService{
 	
 	@Autowired
+	private UserRepositoryH2 userRepositoryH2;
+
+	@Autowired
 	private UserRepository userRepository;
-
-	private List<User> users = new ArrayList<User>();
-	
-	@PostConstruct
-	private void init() {
-		users.add(
-		        new User(
-		            UUID.fromString("11111111-1111-1111-1111-111111111111"),
-		            "user1@mail.com",
-		            "user1",
-		            "5551234567",
-		            "encryptedpass1",
-		            "AARR990101XXX",
-		            LocalDateTime.parse("2026-01-01T10:00:00"),
-		            List.of(
-		                new Address(1L,"workaddress","street No. 1","UK"),
-		                new Address(2L,"homeaddress","street No. 2","AU")
-		            )
-		        )
-		    );
-
-		    users.add(
-		        new User(
-		            UUID.fromString("22222222-2222-2222-2222-222222222222"),
-		            "dev@mail.com",
-		            "developerUser",
-		            "5559876543",
-		            "encryptedpass2",
-		            "BBBB990101YYY",
-		            LocalDateTime.parse("2026-01-01T11:00:00"),
-		            List.of(
-		                new Address(3L,"office","street No. 3","US")
-		            )
-		        )
-		    );
-
-		    users.add(
-		        new User(
-		            UUID.fromString("33333333-3333-3333-3333-333333333333"),
-		            "admin@test.com",
-		            "admin",
-		            "5215512345678",
-		            "encryptedpass3",
-		            "CCCC990101ZZZ",
-		            LocalDateTime.parse("2026-01-01T12:00:00"),
-		            List.of(
-		                new Address(4L,"main","street No. 4","CA"),
-		                new Address(5L,"vacation","street No. 5","ES")
-		            )
-		        )
-		    );
-	}
 	
 	
 	@Override
@@ -86,7 +34,7 @@ public class UserServiceImpl implements UserService{
 	        sort = Sort.by(sortField.getField());
 	    }
 		
-		return userRepository.findAll(sort)
+		return userRepositoryH2.findAll(sort)
 				.stream()
 				.map(UserMapper::toDTO)
 				.toList();
@@ -94,11 +42,78 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<User> allUsersSortedArray(String sortBy) throws IllegalArgumentException{
+		List<User> users = userRepository.allUsers();
+		
 		if (sortBy != null && !sortBy.isBlank()) {
 			UserSortField sortField = UserSortField.from(sortBy);
 			return users.stream().sorted(sortField.getComparator()).toList();
 	    }
 		return users;
+	}
+
+	@Override
+	public List<User> usersFilter(String filter) throws IllegalArgumentException {
+		List<User> users = userRepository.allUsers();
+		
+		if(filter == null || filter.isBlank()) {
+	        throw new IllegalArgumentException("Filter cannot be empty");
+	    }
+
+	    String[] parts = filter.split("\\:");
+	    if(parts.length != 3) {
+	        throw new IllegalArgumentException("Filter must be in format attribute+operator+value");
+	    }
+	    
+	    String attribute = parts[0];
+	    String operator = parts[1];
+	    String value = parts[2];
+	    
+		return users.stream()
+	            .filter(user -> matches(user, attribute, operator, value))
+	            .toList();
+	}
+
+	@Override
+	public List<User> save(User user) throws IllegalArgumentException {
+		
+		return null;
+	}
+
+	@Override
+	public List<User> update(String id) throws IllegalArgumentException {
+		
+		return null;
+	}
+
+	@Override
+	public List<User> remove(String id) throws IllegalArgumentException {
+		
+		return null;
+	}
+	
+	
+	private boolean matches(User user, String attribute, String operator, String value) throws IllegalArgumentException {
+	    String fieldValue;
+
+	    switch(attribute) {
+	        case "name": fieldValue = user.getName(); break;
+	        case "email": fieldValue = user.getEmail(); break;
+	        case "phone": fieldValue = user.getPhone(); break;
+	        case "tax_id": fieldValue = user.getTaxId(); break;
+	        case "id": fieldValue = user.getId().toString(); break;
+	        case "created_at": fieldValue = user.getCreatedAt().toString(); break;
+	        default: throw new IllegalArgumentException("Invalid attribute: " + attribute);
+	    }
+
+	    if(fieldValue == null) return false;
+
+	    return switch(operator) {
+	        case "co" -> fieldValue.contains(value);
+	        case "eq" -> fieldValue.equals(value);
+	        case "sw" -> fieldValue.startsWith(value);
+	        case "ew" -> fieldValue.endsWith(value);
+	        default -> throw new IllegalArgumentException("Invalid operator: " + operator);
+	    };
 	}
 
 }
