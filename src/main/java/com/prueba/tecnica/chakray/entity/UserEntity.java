@@ -1,6 +1,5 @@
 package com.prueba.tecnica.chakray.entity;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +33,7 @@ public class UserEntity {
 	@Column
     private String taxId;
 	@Column
-    private LocalDateTime createdAt;
+    private String createdAt;
 	@OneToMany(mappedBy = "user")
     private List<AddressEntity> addresses;
     

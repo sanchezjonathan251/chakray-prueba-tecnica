@@ -1,6 +1,5 @@
 package com.prueba.tecnica.chakray.repository.impl;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +27,7 @@ public class UserRepositoryImpl implements UserRepository{
 		            "5551234567",
 		            "encryptedpass1",
 		            "AARR990101XXX",
-		            LocalDateTime.parse("2026-01-01T10:00:00"),
+		            "2026-01-01T10:00:00",
 		            List.of(
 		                new Address(1L,"workaddress","street No. 1","UK"),
 		                new Address(2L,"homeaddress","street No. 2","AU")
@@ -44,7 +43,7 @@ public class UserRepositoryImpl implements UserRepository{
 		            "5559876543",
 		            "encryptedpass2",
 		            "BBBB990101YYY",
-		            LocalDateTime.parse("2026-01-01T11:00:00"),
+		            "2026-01-01T11:00:00",
 		            List.of(
 		                new Address(3L,"office","street No. 3","US")
 		            )
@@ -59,7 +58,7 @@ public class UserRepositoryImpl implements UserRepository{
 		            "5215512345678",
 		            "encryptedpass3",
 		            "CCCC990101ZZZ",
-		            LocalDateTime.parse("2026-01-01T12:00:00"),
+		            "2026-01-01T12:00:00",
 		            List.of(
 		                new Address(4L,"main","street No. 4","CA"),
 		                new Address(5L,"vacation","street No. 5","ES")
@@ -70,6 +69,12 @@ public class UserRepositoryImpl implements UserRepository{
 
 	@Override
 	public List<User> allUsers() {
+		return users;
+	}
+
+	@Override
+	public List<User> saveUser(User user) {
+		users.add(user);
 		return users;
 	}
 }
