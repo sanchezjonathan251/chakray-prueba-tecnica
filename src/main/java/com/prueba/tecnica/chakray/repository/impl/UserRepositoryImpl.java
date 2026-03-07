@@ -25,7 +25,7 @@ public class UserRepositoryImpl implements UserRepository{
 		            "user1@mail.com",
 		            "user1",
 		            "5551234567",
-		            "encryptedpass1",
+		            "yE8HbL4CR0z3Wai2G/lE/w==",
 		            "AARR990101XXX",
 		            "2026-01-01T10:00:00",
 		            List.of(
@@ -41,7 +41,7 @@ public class UserRepositoryImpl implements UserRepository{
 		            "dev@mail.com",
 		            "developerUser",
 		            "5559876543",
-		            "encryptedpass2",
+		            "yE8HbL4CR0z3Wai2G/lE/w==",
 		            "BBBB990101YYY",
 		            "2026-01-01T11:00:00",
 		            List.of(
@@ -56,7 +56,7 @@ public class UserRepositoryImpl implements UserRepository{
 		            "admin@test.com",
 		            "admin",
 		            "5215512345678",
-		            "encryptedpass3",
+		            "yE8HbL4CR0z3Wai2G/lE/w==",
 		            "CCCC990101ZZZ",
 		            "2026-01-01T12:00:00",
 		            List.of(
