@@ -22,10 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prueba.tecnica.chakray.model.User;
 import com.prueba.tecnica.chakray.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/")
+@Tag(name = "Users", description = "User management APIs")
 public class UserController {
 
 	@Autowired
@@ -33,6 +36,7 @@ public class UserController {
 	
 	
 	@GetMapping("users/h2")
+	@Operation(summary = "Sorted users h2")
 	public ResponseEntity<?> usersSortedH2(@RequestParam(required = false) String sortBy){
 		try {
 			List<User> users = userService.allUsersSortedH2(sortBy);
@@ -45,6 +49,7 @@ public class UserController {
 	}
 	
 	@GetMapping(value = "users", params = "sortBy")
+	@Operation(summary = "Sorted users")
 	public ResponseEntity<?> usersSorted(@RequestParam String sortBy){
 		try {
 			List<User> users = userService.allUsersSortedArray(sortBy);
@@ -57,6 +62,7 @@ public class UserController {
 	}
 	
 	@GetMapping(value = "users", params = "filter")
+	@Operation(summary = "Filter users")
 	public ResponseEntity<?> usersfilter(@RequestParam String filter){
 		try {
 			List<User> users = userService.usersFilter(filter);
@@ -69,6 +75,7 @@ public class UserController {
 	}
 	
 	@PostMapping(value = "users")
+	@Operation(summary = "Create a new user")
 	public ResponseEntity<?> saveUser(@Valid @RequestBody User user){
 		try {
 			List<User> users = userService.save(user);
@@ -84,6 +91,7 @@ public class UserController {
 	}
 	
 	@PatchMapping("users/{id}")
+	@Operation(summary = "Modify an user atribute by id")
 	public ResponseEntity<?> updateUser(
 	        @PathVariable String id,
 	        @RequestBody Map<String, ?> updates) {
@@ -97,6 +105,7 @@ public class UserController {
 	}
 	
 	@DeleteMapping("users/{id}")
+	@Operation(summary = "Delete an user by id")
 	public ResponseEntity<?> deleteUser(
 	        @PathVariable String id) {
 	    try {

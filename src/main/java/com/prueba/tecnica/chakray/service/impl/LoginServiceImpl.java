@@ -20,7 +20,7 @@ public class LoginServiceImpl implements Loginservice{
 		String decryptedPassword  = null;
 		
 		User user = userRepository.allUsers().stream()
-	            .filter(u -> u.getTaxId().equals(loginRequest.getTaxId()))
+	            .filter(u -> u.getTaxId().equals(loginRequest.getUserName()))
 	            .findFirst()
 	            .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
 
